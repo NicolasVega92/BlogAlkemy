@@ -1,0 +1,67 @@
+﻿@model Blog.Models.Post
+
+<form method="post" asp-action="DeletePost">
+    <input asp-for="Id" hidden />
+    <div class="border p-3">
+        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+        <div class="form-group row">
+            <h2 class="text-black-50 pl-3">Borrar Post</h2>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group col">
+                    <div class="col-2">
+                        <label asp-for="Title"></label>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="Content"></label>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="Image"></label>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="CreationDate"></label>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="Category"></label>
+                    </div>
+                </div>
+                <div class="form-group col">
+                    <div class="col-8">
+                        <input asp-for="Title" disabled class="form-control" />
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Content" disabled class="form-control" />
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Image" disabled class="form-control" />
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="CreationDate" disabled class="form-control" />
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="CategoryId" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-2 row">
+                        <div class="col">
+                            <input type="submit" class="btn btn-danger w-75" value="Delete" />"
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-success w-75" asp-action="Index">Vover a Posts</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+

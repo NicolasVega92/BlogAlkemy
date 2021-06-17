@@ -103,17 +103,41 @@ namespace Blog.Controllers
             return View(obj);
         }
         //Post Update
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Update(Post obj)
+        //{
+        //    if(ModelState.IsValid)
+        //    {
+        //        _db.Posts.Update(obj);
+        //        _db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(obj);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(Post obj)
+        public async Task<IActionResult> Update(Post obj, List<IFormFile> Image)
         {
-            if(ModelState.IsValid)
+            foreach (var item in Image)
+            {
+                if(item.Length > 0)
+                {
+                    using(var stream = new MemoryStream())
+                    {
+                        await item.CopyToAsync(stream);
+                        obj.Image = stream.ToArray();
+                        
+                    }
+                }
+            }
+            if (ModelState.IsValid)
             {
                 _db.Posts.Update(obj);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(obj);
-        }
+    }
     }
 }

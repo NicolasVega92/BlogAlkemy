@@ -1,8 +1,10 @@
 ﻿using Blog.Data;
 using Blog.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,17 +29,35 @@ namespace Blog.Controllers
             return View();
         }
         //POST-Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Create(Post obj)
+        //{
+        //    if(ModelState.IsValid)
+        //    {
+        //        _db.Posts.Add(obj);
+        //        _db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
+        //}
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Post obj)
+        public async Task<IActionResult> Create(Post obj, List<IFormFile> Image)
         {
-            if(ModelState.IsValid)
+            foreach (var item in Image)
             {
-                _db.Posts.Add(obj);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+                if(item.Length > 0)
+                {
+                    using(var stream = new MemoryStream())
+                    {
+                        await item.CopyToAsync(stream);
+                        obj.Image = stream.ToArray();
+                    }
+                }
             }
-            return View();
+            _db.Posts.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
         //Get-Delete
         public IActionResult Delete(int? id)
